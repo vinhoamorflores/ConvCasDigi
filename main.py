@@ -273,4 +273,5 @@ def main(page: ft.Page):
     mostrar_tela_principal()
 
 # Inicia a aplicação definindo a pasta de assets
-ft.app(target=main, assets_dir="assets")
+#ft.app(target=main, assets_dir="assets")
+ft.app(target=main, assets_dir="assets", view=ft.AppView.WEB_BROWSER)
