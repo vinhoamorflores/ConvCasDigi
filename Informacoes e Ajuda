@@ -91,7 +91,11 @@ git push
 
 #######################################################3
 
+- Executar
 
+flet run main.py
+
+- Criar
 
 flet build apk (cria formato apk)
 
@@ -101,7 +105,7 @@ flet build web (cria formato web)
 
 or
 
-flet publish main.py (cria formato web)
+flet publish main.py (cria formato dist)
 
 
 Publicar um app Flet na Vercel com o mínimo de arquivos envolve transformar o app em um site estático e usar a Vercel para servir esses arquivos estáticos. Essa abordagem dispensa o uso de um servidor Python dedicado (serverless functions), reduzindo a estrutura do projeto.
