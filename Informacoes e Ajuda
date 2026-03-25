@@ -1,0 +1,169 @@
+
+
+cria = python3 -m venv venv
+
+ativa = source venv/bin/activate
+
+desativa = deactivate
+
+
+
+########################################################
+
+
+- remover configuracao git
+rm -rf .git
+
+
+- Inicia o git no diretorio atual
+git init
+
+- Associa um repositorio on line ao diretorio atual
+git remote add origin https://github.com/vinhoamorflores/ConvCasDigital.git
+
+- define branch
+git branch -M main
+
+- Define a lista de mudanças
+git commit -m "first commit"
+
+- Executa as Mudancas
+git push -u origin main
+
+
+- Se for pra enviar do computador para o repositório remoto:
+
+git add .
+git commit -m "escreva a mensagem aqui"
+git push origin main
+
+(partindo do princípio que branch, user.name, user.email e repositório remoto já estão configurados)
+
+
+- Se for atualizar do repositório remoto para o computador:
+
+git pull origin main
+
+
+- verifica status da atualizacao
+git status
+
+- remover pasta do repositorio github, mantendo local
+git rm -r --cached <pasta>
+
+
+- nao considerar operacoes na pasta no futuro
+echo "<pasta>/" >> .gitignore
+
+
+- executar no repositorio github os comandos informados
+git commit -m "..." && git push
+
+
+- mostra o repositorio online associado ao direotorio local
+git remote -v
+
+
+- Associa um repositorio on line ao diretorio atual
+git remote add origin https://github.com/vinhoamorflores/ConvCasDigital.git
+
+
+- remover o repositorio online do REMOTE no diretorio local
+git remote rm origin
+
+
+falhas de envio
+
+- fatal: the remote end hung up unexpectedly
+git config --global http.postBuffer 524288000
+
+
+git lfs install
+git lfs track "build/web/assets/app/app.zip"
+# or by extension if you have many zip files:
+git lfs track "*.zip"
+git add .gitattributes
+git commit -m "Configure Git LFS for large files"
+git lfs migrate import --include="build/web/assets/app/app.zip"
+git push
+
+
+
+#######################################################3
+
+
+
+flet build apk (cria formato apk)
+
+or
+
+flet build web (cria formato web)
+
+or
+
+flet publish main.py (cria formato web)
+
+
+Publicar um app Flet na Vercel com o mínimo de arquivos envolve transformar o app em um site estático e usar a Vercel para servir esses arquivos estáticos. Essa abordagem dispensa o uso de um servidor Python dedicado (serverless functions), reduzindo a estrutura do projeto.
+Aqui está o passo a passo mais simples e direto:
+
+
+1. Preparar o seu App (Localmente)
+
+Primeiro, você precisa compilar seu app Flet para web, o que gera arquivos estáticos (HTML/JS/CSS).
+
+No terminal, na pasta do seu projeto, execute:
+
+bash
+flet build web
+
+Isso criará uma pasta chamada build/web. Esses são os únicos arquivos que você precisa subir. 
+
+
+2. Estrutura Mínima na Vercel
+
+Você não precisa de requirements.txt, nem main.py na raiz, nem vercel.json complexos.
+
+Crie uma nova pasta (ex: deploy_vercel).
+
+Copie todo o conteúdo de build/web (gerado no passo 1) para dentro de deploy_vercel.
+
+Opcional, mas recomendado: Na raiz de deploy_vercel, crie um arquivo chamado vercel.json para garantir que o roteamento funcione corretamente:
+json
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+Isso diz à Vercel para direcionar todas as requisições para o index.html do Flet. 
+
+
+3. Publicar
+
+A maneira mais rápida sem criar repositórios GitHub é usando a Vercel CLI.
+
+Instale a Vercel CLI:
+bash
+npm i -g vercel
+
+Entre na pasta deploy_vercel:
+bash
+cd deploy_vercel
+
+Faça o deploy:
+bash
+vercel
+
+Siga as instruções na tela (logar, confirmar pastas, etc.). 
+Por que esta é a forma mais simples?
+
+Sem requirements.txt: Não há dependências Python para a Vercel instalar, pois o app já foi compilado para JS.
+
+Sem servidores (Serverless): A Vercel serve arquivos estáticos muito mais rápido e sem custos de execução de tempo de CPU.
+
+Foco na pasta build: Apenas arquivos estáticos são publicados. 
+
+Dica: Se o seu app precisar de ativos (imagens, fontes), certifique-se de que eles estão na pasta assets antes de executar flet build web
